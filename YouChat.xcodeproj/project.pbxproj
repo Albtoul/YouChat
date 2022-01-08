@@ -27,6 +27,8 @@
 		2EC27FCB2789F39D007CC7AB /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 2EC27FCA2789F39D007CC7AB /* JGProgressHUD */; };
 		2EC27FCF2789F3E6007CC7AB /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 2EC27FCE2789F3E6007CC7AB /* SDWebImage */; };
 		2EC27FD22789F41F007CC7AB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2EC27FD12789F41F007CC7AB /* GoogleService-Info.plist */; };
+		2EC27FD5278A05FA007CC7AB /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC27FD4278A05FA007CC7AB /* DatabaseManager.swift */; };
+		2EC27FD8278A0E74007CC7AB /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC27FD7278A0E74007CC7AB /* StorageManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		2EA3A36A2789AB7200E2C143 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		2EA3A36D2789AB8100E2C143 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		2EC27FD12789F41F007CC7AB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2EC27FD4278A05FA007CC7AB /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		2EC27FD7278A0E74007CC7AB /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,8 @@
 			children = (
 				2EA3A3432789AA8E00E2C143 /* AppDelegate.swift */,
 				2EA3A3452789AA8E00E2C143 /* SceneDelegate.swift */,
+				2EC27FD4278A05FA007CC7AB /* DatabaseManager.swift */,
+				2EC27FD7278A0E74007CC7AB /* StorageManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -227,7 +233,9 @@
 				2EA3A3652789AB5B00E2C143 /* ConversationsViewController.swift in Sources */,
 				2EA3A3442789AA8E00E2C143 /* AppDelegate.swift in Sources */,
 				2EA3A3462789AA8E00E2C143 /* SceneDelegate.swift in Sources */,
+				2EC27FD8278A0E74007CC7AB /* StorageManager.swift in Sources */,
 				2EA3A3622789AB4D00E2C143 /* RegisterViewController.swift in Sources */,
+				2EC27FD5278A05FA007CC7AB /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
