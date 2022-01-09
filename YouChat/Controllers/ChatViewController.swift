@@ -6,24 +6,50 @@
 //
 
 import UIKit
+import MessageKit
 
-class ChatViewController: UIViewController {
+struct Message:MessageType {
+    var sender: SenderType
+    var messageId: String
+    var sentDate: Date
+    var kind: MessageKind
+}
+
+struct Sender:SenderType {
+    var photoURL:String
+    var senderId: String
+    var displayName: String
+}
+
+
+
+class ChatViewController: MessagesViewController {
+    
+    var messages : [Message] = []
+    
+    var selfSender = Sender(photoURL: "", senderId: "1", displayName: "Me")
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        messagesCollectionView.messagesDisplayDelegate = self
+        messagesCollectionView.messagesDataSource = self
+        messagesCollectionView.messagesLayoutDelegate = self
+    }
+}
 
-        // Do any additional setup after loading the view.
+
+extension ChatViewController:MessagesDataSource,MessagesLayoutDelegate,MessagesDisplayDelegate {
+    func currentSender() -> SenderType {
+        selfSender
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
+        messages[indexPath.section]
     }
-    */
-
+    
+    func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
+        messages.count
+    }
+    
+    
 }
