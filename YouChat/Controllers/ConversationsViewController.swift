@@ -11,13 +11,39 @@ import FirebaseAuth
 class ConversationsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
+    var conversations : [Conversation] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Chats"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(composeTapped))
         tableView.dataSource = self
         tableView.delegate = self
+        
+        startListenToConversations()
+        
         // Do any additional setup after loading the view.
+    }
+    
+    func startListenToConversations(){
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
+            return
+        }
+        
+        let safeEmail = DatabaseManager.safeEmail(of: email)
+        
+        DatabaseManager.shared.getAllConversations(for: safeEmail, completion: {
+            [weak self] result in
+            switch result {
+            case .success(let convos):
+                self?.conversations = convos
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        })
     }
     
     @objc func composeTapped(){
@@ -37,6 +63,7 @@ class ConversationsViewController: UIViewController {
         }
         let vc = ChatViewController(with: email, id: nil)
         vc.title = name
+        vc.isNewConversation = true
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -58,13 +85,14 @@ class ConversationsViewController: UIViewController {
 
 extension ConversationsViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        conversations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         
-        cell.textLabel?.text = "Hello World"
+        cell.textLabel?.text = conversations[indexPath.row].name
+        cell.detailTextLabel?.text = conversations[indexPath.row].latest_Message.text
         cell.accessoryType = .disclosureIndicator
         
         return cell
@@ -72,9 +100,9 @@ extension ConversationsViewController : UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        let vc = ChatViewController(with: "", id: nil)
-        vc.title = tableView.cellForRow(at: indexPath)?.textLabel?.text
+        let convo = conversations[indexPath.row]
+        let vc = ChatViewController(with: convo.other_user_email , id: convo.id)
+        vc.title = convo.name
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
     }

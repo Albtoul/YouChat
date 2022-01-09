@@ -23,6 +23,8 @@ class ProfileViewController: UIViewController {
     func signOut(){
         do{
             try Auth.auth().signOut()
+            UserDefaults.standard.setValue(nil, forKey: "email")
+            UserDefaults.standard.setValue(nil, forKey: "name")
         }catch{
             print(error.localizedDescription)
         }

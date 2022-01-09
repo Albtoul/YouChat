@@ -60,14 +60,16 @@ class RegisterViewController: UIViewController {
             Auth.auth().createUser(withEmail: email, password: password, completion: { [weak self]
                 _, error in
                 
+                DispatchQueue.main.async {
+                    self?.spinner.dismiss()
+                }
+                
                 guard error == nil else {
                     print("Error : \(String(describing: error?.localizedDescription))")
                     return
                 }
                 
-                DispatchQueue.main.async {
-                    self?.spinner.dismiss()
-                }
+                
                 
                 let user = ChatUser(firstName: firstName, lastName: lastName, emailAddress: email)
                 DatabaseManager.shared.insertUser(with: user, completion: {

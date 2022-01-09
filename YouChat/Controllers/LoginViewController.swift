@@ -42,14 +42,16 @@ class LoginViewController: UIViewController {
         Auth.auth().signIn(withEmail: email, password: password, completion: {
             [weak self] _, error in
             
+            DispatchQueue.main.async {
+                self?.spinner.dismiss()
+            }
+            
             guard error == nil else {
                 print("Error : \(String(describing: error?.localizedDescription))")
                 return
             }
             
-            DispatchQueue.main.async {
-                self?.spinner.dismiss()
-            }
+            
             
             DatabaseManager.shared.getUserData(for: email, completion: {
                 result in

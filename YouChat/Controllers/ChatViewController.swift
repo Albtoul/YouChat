@@ -147,6 +147,10 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                 if success {
                     print("message sent")
                     self?.isNewConversation = false
+                    if let convID = self?.conversationId {
+                        self?.listenForMessages(id: convID)
+                    }
+                    self?.messageInputBar.inputTextView.text = nil
                 }else{
                     print("failed to send")
                 }
@@ -158,9 +162,14 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             }
             
             // append to existing conversation data
-            DatabaseManager.shared.sendMessage(to: conversationId, name: name, newMessage: message) { success in
+            DatabaseManager.shared.sendMessage(to: conversationId, name: name, newMessage: message) {
+                [weak self] success in
                 if success {
                     print("message sent")
+                    if let convID = self?.conversationId {
+                        self?.listenForMessages(id: convID)
+                    }
+                    self?.messageInputBar.inputTextView.text = nil
                 }else {
                     print("failed to send")
                 }
