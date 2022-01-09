@@ -22,8 +22,23 @@ class ConversationsViewController: UIViewController {
     
     @objc func composeTapped(){
         let vc = storyboard?.instantiateViewController(identifier: "NewConversationVC") as! NewConversationViewController
+        vc.completion = {
+            [weak self] result in
+            self?.createConv(result: result)
+        }
         let navVC = UINavigationController(rootViewController: vc)
         present(navVC, animated: true, completion: nil)
+    }
+    
+    func createConv(result:[String:String]){
+        guard let name=result["name"], let email = result["email"] else {
+            print(result)
+            return
+        }
+        let vc = ChatViewController(with: email, id: nil)
+        vc.title = name
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -39,15 +54,6 @@ class ConversationsViewController: UIViewController {
             self.present(loginNav, animated: false, completion: nil)
         }
     }
-    
-    func signOut(){
-        do{
-            try Auth.auth().signOut()
-        }catch{
-            print(error.localizedDescription)
-        }
-    }
-
 }
 
 extension ConversationsViewController : UITableViewDelegate, UITableViewDataSource {
@@ -67,7 +73,7 @@ extension ConversationsViewController : UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let vc = ChatViewController()
+        let vc = ChatViewController(with: "", id: nil)
         vc.title = tableView.cellForRow(at: indexPath)?.textLabel?.text
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)

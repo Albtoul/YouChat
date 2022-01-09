@@ -51,6 +51,20 @@ class LoginViewController: UIViewController {
                 self?.spinner.dismiss()
             }
             
+            DatabaseManager.shared.getUserData(for: email, completion: {
+                result in
+                switch result{
+                case .success(let userData):
+                    guard let firstName = userData["first_name"] as? String, let lastName = userData["last_name"] as? String else {
+                        return
+                    }
+                    
+                    UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "name")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            })
+            
             UserDefaults.standard.setValue(email, forKey: "email")
             
             self?.navigationController?.dismiss(animated: true, completion: nil)
